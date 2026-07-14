@@ -729,6 +729,7 @@
           <button class="lvl" data-lvl="you">You</button>
           <button class="lvl" data-lvl="dyads">Dyads</button>
           <button class="lvl" data-lvl="superteam">Super Team</button>
+          <button class="lvl" data-lvl="coach">Super Coach</button>
         </div>
       </div>
       <div class="navright"><button class="themetoggle" id="themeBtn" aria-label="Switch theme"></button><div class="avatar"><b>AR</b><img src="https://i.pravatar.cc/120?img=13" alt="" onerror="this.remove()"></div></div>
@@ -1299,7 +1300,7 @@
 
   /* ---------- router ---------- */
   var chrome=$('#chrome'), subnav=$('#subnav'), current=null;
-  var consoleViews=['snapshot','weekly','guide','gap','dyad','coaching','superteam'];
+  var consoleViews=['snapshot','weekly','guide','gap','dyad','coaching','superteam','faststart'];
   function setLevel(l){ document.querySelectorAll('.lvl').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lvl')===l); }); }
   function setSub(s){ document.querySelectorAll('.sub').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-sub')===s); }); }
   function showView(name){
@@ -1308,10 +1309,10 @@
     chrome.style.display=isConsole?'block':'none';
     cmpSetVisible(isConsole); if(themeFlowBtn) themeFlowBtn.style.display=isConsole?'none':'flex';
     if(isConsole){
-      var lvl=(name==='snapshot'||name==='weekly'||name==='guide'||name==='gap')?'you':((name==='dyad'||name==='coaching')?'dyads':'superteam');
+      var lvl=(name==='snapshot'||name==='weekly'||name==='guide'||name==='gap'||name==='faststart')?'you':(name==='dyad'?'dyads':(name==='coaching'?'coach':'superteam'));
       setLevel(lvl);
       subnav.classList.toggle('on', lvl==='you');
-      if(lvl==='you') setSub(name==='weekly'?'focus':(name==='guide'?'guide':(name==='gap'?'gap':'profile')));
+      if(lvl==='you') setSub(name==='weekly'?'focus':(name==='guide'||name==='faststart'?'guide':(name==='gap'?'gap':'profile')));
     }
     name==='superteam'?startDrift():stopDrift();
     if(name==='assessment') resetAsm();
@@ -1325,7 +1326,7 @@
   /* nav wiring */
   $('#home').onclick=function(){ showView('weekly'); };
   document.querySelectorAll('.lvl').forEach(function(b){
-    b.onclick=function(){ var l=b.getAttribute('data-lvl'); showView(l==='you'?'weekly':(l==='dyads'?'dyad':'superteam')); };
+    b.onclick=function(){ var l=b.getAttribute('data-lvl'); showView(l==='you'?'weekly':(l==='dyads'?'dyad':(l==='coach'?'coaching':'superteam'))); };
   });
   document.querySelectorAll('.sub').forEach(function(b){
     b.onclick=function(){ var s=b.getAttribute('data-sub'); showView(s==='focus'?'weekly':(s==='guide'?'guide':(s==='gap'?'gap':'snapshot'))); };
